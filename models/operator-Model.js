@@ -1,13 +1,14 @@
 const db = require('../database/dbConfig');
 
-const add = operator => {
+const add = (operator) => {
     return db('operators')
     .insert(operator)
     .then(([id]) => db('operators').where({ id }).first());
 }
 
-const findBy = filter => {
+const findBy = (filter) => {
     return db('operators')
+    .select('id', 'username', 'password')
     .where(filter)
 }
 
@@ -22,9 +23,7 @@ const update = (changes, id) => {
     return db('operators')
     .where({ id })
     .update(changes)
-    .then(id => {
-        return findById(id)
-    })
+    
 }
 
 const remove = (id) => {
