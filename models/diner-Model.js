@@ -7,7 +7,9 @@ const add = diner => {
 }
 
 const findBy = filter => {
-    return db('diners').where(filter)
+    return db('diners')
+    .select('id', 'username', 'password')
+    .where(filter)
 }
 
 const findById = (id) => {
@@ -21,9 +23,7 @@ const update = (changes, id) => {
     return db('diners')
     .where({ id })
     .update(changes)
-    .then(id => {
-        return findById(id)
-    })
+    
 }
 
 const remove = (id) => {
