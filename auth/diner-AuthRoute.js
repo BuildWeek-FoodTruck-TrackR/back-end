@@ -38,7 +38,7 @@ router.post('/login', (req, res) => {
           const token = generateToken(diner)
   
           res.status(200).json({
-            message: `Welcome ${diner.username}`,
+            message: `Welcome ${diner.username}`, id: diner.id,
             token
           })
         } else {
