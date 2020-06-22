@@ -1,20 +1,20 @@
 const db = require('../database/dbConfig');
 
+
+const findBy = () => {
+    return db('operators')
+    
+}
+
 const add = (operator) => {
     return db('operators')
     .insert(operator)
     .then(([id]) => db('operators').where({ id }).first());
 }
 
-const findBy = (filter) => {
-    return db('operators')
-    .select('id', 'username', 'password')
-    .where(filter)
-}
-
 const findById = (id) => {
     return db('operators')
-    .select('id', 'username')
+    .select('id', 'username', 'password', 'trucks_owned')
     .where({ id })
     .first()
 }
@@ -22,7 +22,10 @@ const findById = (id) => {
 const update = (changes, id) => {
     return db('operators')
     .where({ id })
-    .update(changes)
+    .update(changes, 'id')
+    .then(() => {
+        return findById(id)
+    })
     
 }
 
