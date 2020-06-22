@@ -16,6 +16,6 @@ module.exports = (req, res, next) => {
             }
         })
     } else {
-        res.status(401).json({ Error: "Not Authorized to Enter"})
+        res.status(401).json({ Error: "Not Authorized To Enter"})
     }
 };

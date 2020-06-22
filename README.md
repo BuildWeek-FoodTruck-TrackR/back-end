@@ -148,6 +148,5 @@ _example:_
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiVGVzdFRvbSIsImlhdCI6MTU5MjUxMTEyNCwiZXhwIjoxNTkyNTE0NzI0fQ.0rp9BLFWDPpp8c03nD_soA1_TJNuTcS4rS6s8ZpsTsE"
 }
 ```
-```
 
 
