@@ -4,28 +4,34 @@ const helmet = require('helmet');
 
 
 // ROUTES SOURCE
-// const operatorRoute = require('./Routes/operator-Route');
-// const dinerRouter =  require('./Routes/diner-Route');
+const operatorRoute = require('./Routes/operator-Route');
+const dinerRouter =  require('./Routes/diner-Route');
 
 // Authenticated Routes 
 const operatorAuth = require('../auth/operator-AuthRouter.js')
 const dinerAuth = require('../auth/diner-AuthRoute')
 
+// Authenticated Middleware
+const Restricted = require('../auth/auth-Middleware')
+
 const server = express();
+
 
 server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
-// ROUTES
-// server.use('/operators', operatorRoute);
-// server.use('/diners', dinerRouter);
+// ROUTES for Admin
+server.use('/operators', Restricted, operatorRoute);
+server.use('/diners', Restricted, dinerRouter);
+// server.use('/trucks')
 
+// Authenticated Login for Operators and Client(Diners)
 server.use('/auth/operator', operatorAuth);
 server.use('/auth/diner', dinerAuth);
 
 server.get('/', async (req, res) => {
-    res.send({ api: 'Welcome to the Api' })
+    res.json({ api: 'Welcome to the Api' })
 })
 
 
