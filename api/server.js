@@ -4,8 +4,8 @@ const helmet = require('helmet');
 
 
 // ROUTES SOURCE
-const operatorRoute = require('./Routes/operator-Route');
-const dinerRouter =  require('./Routes/diner-Route');
+const operatorRoute = require('./Routes/Operator/operator-Route');
+const dinerRouter =  require('./Routes/Diner/diner-Route');
 
 // Authenticated Routes 
 const operatorAuth = require('../auth/operator-AuthRouter.js')

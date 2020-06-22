@@ -1,17 +1,22 @@
 const router = require('express').Router();
 
-const Operators = require('../../models/operator-Model')
+const Operators = require('../../../models/operator-Model')
 
 
+//
 router.get('/', (req, res) => {
 
-    try {
-        res.status(200).json({ message: "Welcome to the Operator Route" });
-    } catch (err) {
-        next(err);
-    }
+    Operators.findBy()
+    .then(operators => {
+        res.status(200).json(operators);
+    })
+    .catch (err => {
+        res.status(500).json({ message: 'Failed To Get Operators'})
+    })
+        
 
 })
+
 
 // #### GET BY ID #### 
 router.get('/:id', (req, res) => {
@@ -30,5 +35,7 @@ router.get('/:id', (req, res) => {
     })
 
 })
+
+
 
 module.exports = router;
