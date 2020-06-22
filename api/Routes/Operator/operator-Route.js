@@ -3,7 +3,7 @@ const router = require('express').Router();
 const Operators = require('../../../models/operator-Model')
 
 
-//
+// GET REQUEST -> /operators
 router.get('/', (req, res) => {
 
     Operators.findBy()
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 })
 
 
-// #### GET BY ID #### 
+// #### GET REQUEST BY ID -> operators/:id #### 
 router.get('/:id', (req, res) => {
     const { id } = req.params;
 
@@ -36,6 +36,42 @@ router.get('/:id', (req, res) => {
 
 })
 
+// #### UPDATE OPERATOR BY id -> operators/:id ####
 
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+
+    Operators.findById(id)
+    .then(operator => {
+        if (operator) {
+            Operators.update(changes, id)
+            .then(updatedOperator => {
+                res.json(updatedOperator);
+            });
+        } else {
+            res.status(404).json({ message: 'Could Not Find Operator With The Given Id' });
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ message: "Failed To Update Operator Info."})
+    })
+})
+
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+
+    Operators.remove(id)
+    .then(deleted => {
+        if (deleted) {
+            res.json({ Removed: deleted });
+        } else {
+            res.status(404).json({ message: 'Could Not Find Operator With The Given Id' });
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ message: "Failed To Delete Operator Info."})
+    })
+})
 
 module.exports = router;

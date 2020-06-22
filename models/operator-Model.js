@@ -14,7 +14,7 @@ const add = (operator) => {
 
 const findById = (id) => {
     return db('operators')
-    .select('id', 'username')
+    .select('id', 'username', 'password', 'trucks_owned')
     .where({ id })
     .first()
 }
