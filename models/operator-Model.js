@@ -14,9 +14,21 @@ const add = (operator) => {
 
 const findById = (id) => {
     return db('operators')
-    .select('id', 'username', 'password', 'trucks_owned')
+    .select('id', 'username')
     .where({ id })
-    .first()
+    .then(operator => {
+        return db
+        .select('*')
+        .from('trucks')
+        .where({ operator_id: id })
+        .then(truckOwned => {
+            return {
+                operator: operator,
+                truckOwned: truckOwned.map(truck => ({...truck}))
+            }
+        })
+    })
+    
 }
 
 const update = (changes, id) => {

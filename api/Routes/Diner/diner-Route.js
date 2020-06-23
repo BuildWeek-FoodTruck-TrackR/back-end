@@ -5,7 +5,7 @@ const router = express.Router();
 const Diners = require('../../../models/diner-Model');
 
 
-// GET REQUEST -> /diners
+// GET ALL REQUEST -> /diners
 router.get('/', (req, res) => {
 
   Diners.findBy()
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 
 })
 
-// #### GET REQUEST BY ID -> diners/:id #### 
+// #### GET DINER REQUEST BY ID -> diners/:id #### 
 router.get('/:id', (req, res) => {
   const { id } = req.params;
 
@@ -38,8 +38,6 @@ router.get('/:id', (req, res) => {
 })
 
 // #### UPDATE DINER BY id -> diners/:id ####
-
-
 router.put('/:id', (req, res) => {
   const { id } = req.params;
   const changes = req.body;

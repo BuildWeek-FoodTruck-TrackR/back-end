@@ -73,6 +73,8 @@ exports.up = async function(knex) {
     table.string("location").notNullable();
     table.string("departure_time");
   });
+
+  
 };
 
 

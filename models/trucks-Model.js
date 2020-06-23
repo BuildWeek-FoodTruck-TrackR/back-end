@@ -1,6 +1,6 @@
 const db = require('../database/dbConfig');
 
-const add = (operator) => {
+const add = (trucks) => {
     return db('trucks')
     .insert(trucks)
     .then(([id]) => db('trucks').where({ id }).first());
@@ -11,19 +11,43 @@ const findAll = () => {
     .select('*')
 }
 
-const findBy = (filter) => {
-    return db('trucks')
-    .select('id', 'name' )
-    .where(filter)
-}
 
 const findById = (id) => {
     return db('trucks')
-    .select('id', 'name', 'operator_id', 'cuisine_type', 'current_location')
+    .select('id', 'name', 'operator_id', 'cuisine_type')
     .where({ id })
-    .first()
+    .then(truck => {
+        return db
+        .select('*')
+        .from('current_location')
+        .where({ id })
+        .then(location => {
+            return {
+                truck: truck,
+                location: location.map(location => ({...location}))
+            }
+        })
+    })
 }
 
+const findBy = (id) => {
+    return db('trucks')
+    .select('*')
+    .from('trucks')
+    .where({ id })
+    .then(truck => {
+        return db
+        .select('*')
+        .from('current_location')
+        .where({ id })
+        .then(location => {
+            return {
+                truck: truck,
+                location: location.map(location => ({...location}))
+            }
+        })
+    })
+}
 
 
 const update = (changes, id) => {
@@ -52,8 +76,8 @@ const findByCuisineType = (type) => {
 module.exports = {
     add,
     findAll,
-    findBy,
     findById,
+    findBy,
     update,
     remove,
     findByCuisineType

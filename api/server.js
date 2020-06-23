@@ -6,6 +6,7 @@ const helmet = require('helmet');
 // ROUTES SOURCE
 const operatorRoute = require('./Routes/Operator/operator-Route');
 const dinerRouter =  require('./Routes/Diner/diner-Route');
+const truckRouter = require('./Routes/trucks-Route')
 
 // Authenticated Routes 
 const operatorAuth = require('../auth/operator-AuthRouter.js')
@@ -24,7 +25,7 @@ server.use(express.json());
 // ROUTES for Admin
 server.use('/operators', Restricted, operatorRoute);
 server.use('/diners', Restricted, dinerRouter);
-// server.use('/trucks')
+server.use('/trucks', Restricted, truckRouter)
 
 // Authenticated Login for Operators and Client(Diners)
 server.use('/auth/operator', operatorAuth);
