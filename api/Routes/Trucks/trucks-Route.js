@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const Trucks = require('../../models/trucks-Model')
+const Trucks = require('../../../models/trucks-Model')
 
 
 // GET ALL TRUCKS REQUEST -> /trucks
