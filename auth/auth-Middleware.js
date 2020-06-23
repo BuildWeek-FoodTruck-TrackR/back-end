@@ -12,10 +12,12 @@ module.exports = (req, res, next) => {
                 res.status(401).json({ message: "Unauthorized: Error 401 Access is Denied"})
             } else {
                 req.decodedJwt = decodedJwt;
+                console.log(decodedJwt);
+                
                 next();
             }
         })
     } else {
-        res.status(401).json({ Error: "Not Authorized To Enter"})
+        res.status(401).json({ 401: "Not Authorized To Enter"})
     }
 };
