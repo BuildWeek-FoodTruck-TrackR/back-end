@@ -6,7 +6,7 @@ exports.up = async function(knex) {
     table.increments("id");
     table.string("username").notNullable().unique();
     table.string("password").notNullable();
-    table.string("trucks_owned");
+    table.integer("trucks_owned").unsigned()
   });
 
   // #### DINERS TABLE ####
