@@ -14,8 +14,8 @@ exports.up = async function(knex) {
     table.increments("id");
     table.string("username").notNullable().unique();
     table.string("password").notNullable();
-    table.string("longtitude");
-    table.string('latitude');
+    table.string("lon");
+    table.string('lat');
 
   });
 
@@ -31,7 +31,7 @@ exports.up = async function(knex) {
     table.string("image URL");
     table.string("cuisine_type").notNullable();
     table.integer("customer_ratings_avg");
-    table.string("open_time");
+    table.string("open_time").notNullable();
     
     
     
@@ -57,7 +57,7 @@ exports.up = async function(knex) {
       .onDelete('SET NULL')
 
 
-      table.integer('rating')
+      table.integer('rate')
       .notNullable()
   })
 
@@ -100,7 +100,7 @@ exports.up = async function(knex) {
       .inTable('trucks')
       .onDelete('SET NULL')
       
-    table.integer('star_rating').notNullable()
+    table.integer('rate').notNullable()
     table.string('review', 500).notNullable()
 
   })
@@ -130,8 +130,6 @@ exports.up = async function(knex) {
     table.string("item_description").notNullable();
     table.float("item_price").notNullable();
     table.string("item_image_URL");
-    //remove item rating from table
-    table.float("customer_ratings");
     table.float("customer_rating_avg");
   });
 
@@ -146,7 +144,15 @@ exports.up = async function(knex) {
     .inTable('menu_items')
     .onDelete('SET NULL')
 
-    table.integer('star_rating');
+    table
+    .integer('diner_id')
+    .unsigned()
+    .notNullable()
+    .references('id')
+    .inTable('diners')
+    .onDelete('SET NULL')
+
+    table.integer('rating');
 
     
   });
@@ -160,8 +166,8 @@ exports.up = async function(knex) {
       .inTable("trucks")
       .onDelete("SET NULL");
 
-    table.string('longtitude');
-    table.string('latitude');
+    table.string('lon').notNullable();
+    table.string('lat').notNullable();
     table.string("departure_time");
   });
 
