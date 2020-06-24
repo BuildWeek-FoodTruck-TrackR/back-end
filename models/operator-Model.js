@@ -13,8 +13,8 @@ const add = (operator) => {
 }
 
 const findById = (id) => {
-    return db('operators')
-    .select('id', 'username')
+    return db('operators as o')
+    .select('o.id', 'o.username')
     .where({ id })
     .then(operator => {
         return db
@@ -29,6 +29,13 @@ const findById = (id) => {
         })
     })
     
+}
+
+const findTruckByOperator = (operatorId) => {
+    return db('trucks as t')
+    .select('t.id', 't.name', 't.image URL', 't.cuisine_type', 't.open_time')
+    .innerJoin('operators as o', 'o.id', 't.operator_id')
+    .where({ 'o.id': operatorId})
 }
 
 const update = (changes, id) => {
@@ -47,10 +54,13 @@ const remove = (id) => {
     .del()
 }
 
+
+
 module.exports = {
     add,
     findBy,
     findById,
+    findTruckByOperator,
     update,
     remove
 }

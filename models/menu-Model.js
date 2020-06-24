@@ -36,16 +36,17 @@ const findBy = (id) => {
     
 }
 
-const findMenuByTruck = (id) => {
-    return db('menu_items as mi')
-    .select('mi.id', 'mi.item_name', 'mi.item_description', 'mi.item_price', 'mi.item_image_URL')
-    .where({ id })
+const findMenuByTruck = (truckId) => {
+    return db('menu_items as m')
+    .select('m.id', 'm.name as name', 'm.description as description')
+    .innerJoin('trucks as t', 't.id', 'm.truck_id' )
+    .where({ 't.id': truckId })
 }
 
 
 
 const updateMenuItem = (changes, id) => {
-    return db('menus')
+    return db('menu_items')
     .where({ id })
     .update(changes)
     .then(() => {
@@ -55,7 +56,7 @@ const updateMenuItem = (changes, id) => {
 }
 
 const removeMenuItem = (id) => {
-    return db('menus')
+    return db('menu_items')
     .where({ id })
     .del()
 }

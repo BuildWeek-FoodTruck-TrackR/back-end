@@ -105,9 +105,9 @@ exports.up = async function(knex) {
 
   })
   
-  
-  // #### MENU TABLE ####
-  await knex.schema.createTable("menus", (table) => {
+
+  // #### MENU ITEM #### 
+  await knex.schema.createTable("menu_items", (table) => {
     table.increments("id");
     table
       .integer("truck_id")
@@ -115,21 +115,9 @@ exports.up = async function(knex) {
       .inTable("trucks")
       .onDelete("SET NULL");
     table.string("name").notNullable();
-    table.string("menu_items");
-  });
-
-  // #### MENU ITEM #### 
-  await knex.schema.createTable("menu_items", (table) => {
-    table.increments("id");
-    table
-      .integer("menu_id")
-      .references("id")
-      .inTable("menus")
-      .onDelete("SET NULL");
-    table.string("item_name").notNullable();
-    table.string("item_description").notNullable();
-    table.float("item_price").notNullable();
-    table.string("item_image_URL");
+    table.string("description").notNullable();
+    table.float("price").notNullable();
+    table.string("image_URL");
     table.float("customer_rating_avg");
   });
 
