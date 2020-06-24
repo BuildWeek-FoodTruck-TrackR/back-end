@@ -27,8 +27,29 @@ const findById = (id) => {
                 location: location.map(location => ({...location}))
             }
         })
+        .then(menu => {
+            return db
+            .select('*')
+            .from('menus')
+            .where({ id })
+            .then(menu_item =>{
+                return db
+                .select('*')
+                .from('menu_items')
+                .where({ id })
+                .then(items => {
+                    return {
+                        menu_item: menu_item,
+                        items: items.map(item => ({ ...item }))
+                    }
+                })
+                
+            })
+        })
     })
 }
+
+
 
 const findBy = (id) => {
     return db('trucks')

@@ -6,7 +6,7 @@ exports.up = async function(knex) {
     table.increments("id");
     table.string("username").notNullable().unique();
     table.string("password").notNullable();
-    table.integer("trucks_owned").unsigned()
+
   });
 
   // #### DINERS TABLE ####
@@ -14,8 +14,8 @@ exports.up = async function(knex) {
     table.increments("id");
     table.string("username").notNullable().unique();
     table.string("password").notNullable();
-    table.string("location");
-    table.string("favorite_trucks");
+    table.string("longtitude");
+    table.string('latitude');
 
   });
 
@@ -30,12 +30,83 @@ exports.up = async function(knex) {
     table.string("name").notNullable();
     table.string("image URL");
     table.string("cuisine_type").notNullable();
-    table.integer("customer_rating");
     table.integer("customer_ratings_avg");
-    table.string("menu");
+    table.string("open_time");
+    
+    
+    
   });
+
+  // #### TRUCK RATINGS FROM DINER ####
+  await knex.schema.createTable("customer_rating", (table) => {
+    table.increments('id');
+    table
+      .integer('truck_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('trucks')
+      .onDelete('SET NULL')
+
+    table
+      .integer('diner_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('diners')
+      .onDelete('SET NULL')
+
+
+      table.integer('rating')
+      .notNullable()
+  })
+
+  // #### FAVORITE TRUCK for DINER ####
+  await knex.schema.createTable('fav_trucks', (table) => {
+    table.increments('id')
+
+    table
+      .integer('diner_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('diners')
+      .onDelete('SET NULL')
+
+    table
+      .integer('truck_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('trucks')
+      .onDelete('SET NULL')
+  })
+
+  // #### TRUCK REVIEWS ####
+  await knex.schema.createTable('truck_reviews', (table) => {
+    table.increments('id')
+    table
+      .integer('diner_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('diners')
+      .onDelete('SET NULL')
+    table
+      .integer('truck_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('trucks')
+      .onDelete('SET NULL')
+      
+    table.integer('star_rating').notNullable()
+    table.string('review', 500).notNullable()
+
+  })
   
-  // #### MENUE TABLE ####
+  
+  // #### MENU TABLE ####
   await knex.schema.createTable("menus", (table) => {
     table.increments("id");
     table
@@ -58,11 +129,29 @@ exports.up = async function(knex) {
     table.string("item_name").notNullable();
     table.string("item_description").notNullable();
     table.float("item_price").notNullable();
-    table.string("item_photo_URL");
+    table.string("item_image_URL");
+    //remove item rating from table
     table.float("customer_ratings");
     table.float("customer_rating_avg");
   });
 
+  // #### ITEM RATINGS ####
+  await knex.schema.createTable('item_ratings', (table) => {
+    table.increments('id');
+    table
+    .integer('item_id')
+    .unsigned()
+    .notNullable()
+    .references('id')
+    .inTable('menu_items')
+    .onDelete('SET NULL')
+
+    table.integer('star_rating');
+
+    
+  });
+
+  // #### TRUCK CURRENT LOCATION #### 
   await knex.schema.createTable("current_location", (table) => {
     table.increments("id");
     table
@@ -70,7 +159,9 @@ exports.up = async function(knex) {
       .references("id")
       .inTable("trucks")
       .onDelete("SET NULL");
-    table.string("location").notNullable();
+
+    table.string('longtitude');
+    table.string('latitude');
     table.string("departure_time");
   });
 
@@ -81,8 +172,12 @@ exports.up = async function(knex) {
 
 exports.down = async function(knex) {
   await knex.schema.dropTableIfExists("current_location");
+  await knex.schema.dropTableIfExists("item_ratings");
   await knex.schema.dropTableIfExists("menu_items");
   await knex.schema.dropTableIfExists("menus");
+  await knex.schema.dropTableIfExists("truck_reviews");
+  await knex.schema.dropTableIfExists("fav_trucks");
+  await knex.schema.dropTableIfExists("customer_rating");
   await knex.schema.dropTableIfExists("trucks");
   await knex.schema.dropTableIfExists("diners");
   await knex.schema.dropTableIfExists("operators");
