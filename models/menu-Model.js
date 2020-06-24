@@ -11,13 +11,13 @@ const findAll = () => {
     .select('*')
 }
 
-const findBy = (filter) => {
+const findMenuItemById = (filter) => {
     return db('menus')
-    .select('id', 'name')
+    .select('id', 'item_name', 'item_description', 'item_price', 'item_image_URL')
     .where(filter)
 }
 
-const findById = (id) => {
+const findBy = (id) => {
     return db('menus')
     .select('id')
     .where({ id })
@@ -36,9 +36,15 @@ const findById = (id) => {
     
 }
 
+const findMenuByTruck = (id) => {
+    return db('menu_items as mi')
+    .select('mi.id', 'mi.item_name', 'mi.item_description', 'mi.item_price', 'mi.item_image_URL')
+    .where({ id })
+}
 
 
-const update = (changes, id) => {
+
+const updateMenuItem = (changes, id) => {
     return db('menus')
     .where({ id })
     .update(changes)
@@ -48,7 +54,7 @@ const update = (changes, id) => {
     
 }
 
-const remove = (id) => {
+const removeMenuItem = (id) => {
     return db('menus')
     .where({ id })
     .del()
@@ -58,7 +64,8 @@ module.exports = {
     add,
     findAll,
     findBy,
-    findById,
-    update,
-    remove
+    findMenuItemById,
+    findMenuByTruck,
+    updateMenuItem,
+    removeMenuItem
 }

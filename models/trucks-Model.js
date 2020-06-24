@@ -14,39 +14,71 @@ const findAll = () => {
 
 const findById = (id) => {
     return db('trucks')
-    .select('id', 'name', 'operator_id', 'cuisine_type')
+    .select('*')
     .where({ id })
     .then(truck => {
         return db
         .select('*')
         .from('current_location')
-        .where({ id })
+        .where({ truck_id: id })
         .then(location => {
             return {
                 truck: truck,
                 location: location.map(location => ({...location}))
             }
         })
-    })
+    })  
 }
+
+const findByOperator = (id) => {
+    return db('trucks')
+    .select('*')
+    .where({ operator_id: id })
+}
+
+
 
 const findBy = (id) => {
     return db('trucks')
     .select('*')
+    .where({ id })
+    
+}
+
+const addTruckReview = (review) => {
+    return db ('truck_reviews')
+    .insert(review, 'id')
+    .then(ids => {
+        const [id] = ids;
+        return findReviewById(id)
+    })
+}
+
+const findReviewById = (id) => {
+    return db 
+    .select('*')
+    .from('truck_reviews')
+    .where({ id })
+    .limit(10)
+    
+}
+
+const getReviewsByTruck = (id) => {
+    return db('trucks')
+    .select('*')
     .from('trucks')
     .where({ id })
-    .then(truck => {
-        return db
+    .then(() => {
+        return db('truck_reviews')
         .select('*')
-        .from('current_location')
-        .where({ id })
-        .then(location => {
+        .where({ truck_id: id })
+        .then(review => {
             return {
-                truck: truck,
-                location: location.map(location => ({...location}))
+                review: review.map(review => ({ ...review }))
             }
         })
     })
+    
 }
 
 
@@ -66,11 +98,6 @@ const remove = (id) => {
     .del()
 }
 
-const findByCuisineType = (type) => {
-    return db('trucks')
-    .select('*')
-    .where('cuisine_type', type)
-}
 
 
 module.exports = {
@@ -80,5 +107,9 @@ module.exports = {
     findBy,
     update,
     remove,
-    findByCuisineType
+    findByOperator,
+    getReviewsByTruck,
+    findReviewById,
+    addTruckReview
+    
 }

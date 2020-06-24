@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const Trucks = require('../../../models/trucks-Model')
-
+const Menu = require('../../../models/menu-Model')
 
 // GET ALL TRUCKS REQUEST -> /trucks
 router.get('/', (req, res) => {
@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
     const { id } = req.params;
 
-    Trucks.findBy(id)
+    Trucks.findById(id)
     .then(trucks => {
         if (trucks) {
             res.status(200).json(trucks)
@@ -49,6 +49,57 @@ router.get('/:id', (req, res) => {
     })
 
 })
+
+// ### GET MENU per TRUCKS ####
+router.get('/:id/menu', (req, res) => {
+    const { id } = req.params;
+
+    Menu.findMenuByTruck(id)
+    .then(items => {
+        if (items) {
+            res.status(200).json(items)
+        } else {
+            res.status(404).json({ error: 'Could not find truck with id'})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ error: "Unable to retrieve the menu"})
+    })
+})
+
+// #### POST REVIEW FOR TRUCK (DINER)
+router.post('/:id/reviews', (req, res) => {
+    const { id } = req.params;
+    let newReview = req.body;
+    newReview.truck_id = id
+
+    Trucks.addTruckReview(newReview)
+    .then(review =>{
+        res.status(201).json(review);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({ errorMessage: 'unable to add review' });
+    })
+})
+
+// ### GET LISTING OF REVIEWS FOR TRUCK ###//#endregion
+router.get('/:id/reviews', (req, res) => {
+    const { id } = req.params;
+   
+
+
+    Trucks.getReviewsByTruck(id)
+        .then(reviews => {
+            res.status(200).json(reviews);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ errorMessage: 'An error occurred while loading reviews' });
+        })
+})
+
+
 
 // #### UPDATE TRUCKS BY id -> trucks/:id ####
 
