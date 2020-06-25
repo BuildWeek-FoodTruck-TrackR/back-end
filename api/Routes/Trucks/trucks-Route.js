@@ -18,25 +18,25 @@ router.get('/', (req, res) => {
 })
 
 
-// // #### POST NEW TRUCK -> /trucks
-router.post('/', (req, res) => {
-    const truck = req.body
+// // // #### POST NEW TRUCK -> /trucks
+// router.post('/', (req, res) => {
+//     const truck = req.body
  
-    Trucks.add(truck)
-    .then (addTruck => {
-        res.status(201).json(addTruck)
-    })
-    .catch(err => {
-        res.status(500).json({ message: 'Failed to create a new Truck' });
-    })
-})
+//     Trucks.add(truck)
+//     .then (addTruck => {
+//         res.status(201).json(addTruck)
+//     })
+//     .catch(err => {
+//         res.status(500).json({ message: 'Failed to create a new Truck' });
+//     })
+// })
 
 
-// #### GET REQUEST BY Trucks ID -> trucks/:id #### 
+// #### GET REQUEST for Trucks by operator ID -> trucks/:id #### 
 router.get('/:id', (req, res) => {
     const { id } = req.params;
 
-    Trucks.findBy(id)
+    Trucks.findByOperator(id)
     .then(trucks => {
         Trucks.findRating(id)
         .then(ratings => {
@@ -64,7 +64,7 @@ router.get('/:id', (req, res) => {
 
 
 
-// ### GET MENU per TRUCKS ####
+// ### GET MENU per TRUCKS #### --> trucks/:id/menu id is trucks_id
 router.get('/:id/menu', (req, res) => {
     const { id } = req.params;
 

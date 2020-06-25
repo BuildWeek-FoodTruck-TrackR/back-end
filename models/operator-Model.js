@@ -1,21 +1,30 @@
 const db = require('../database/dbConfig');
 
 
-const findBy = () => {
+const findAll = () => {
     return db('operators')
-    
+    .select('*')
+
+}
+
+const findBy = (filter) => {
+    return db('operators')
+    .select('id', 'username', 'password')
+    .where(filter)
 }
 
 const add = (operator) => {
     return db('operators')
     .insert(operator)
-    .then(([id]) => db('operators').where({ id }).first());
+    .then((ids) => {
+        return findById(ids[0])
+    }) 
 }
 
 const findById = (id) => {
     return db('operators as o')
-    .select('o.id', 'o.username')
     .where({ id })
+    .first()
     .then(operator => {
         return db
         .select('*')
@@ -57,6 +66,7 @@ const remove = (id) => {
 
 
 module.exports = {
+    findAll,
     add,
     findBy,
     findById,
