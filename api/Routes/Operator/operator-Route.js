@@ -100,7 +100,7 @@ router.delete('/:id', (req, res) => {
 
 
 // #### CREATE NEW TRUCK  ####
-router.post('/:id/trucks', (req, res) => {
+router.post('/trucks', (req, res) => {
 
     const truck = req.body
  
@@ -134,7 +134,7 @@ router.get("/:id/trucks/:truck_id", async (req, res, next) => {
 });
 
 // #### UPDATE TRUCK BY THEIR ID
-
+//check route
 router.put("/:id/trucks/:truck_id", async (req, res) => {
     try {
       await db("trucks")
@@ -145,7 +145,7 @@ router.put("/:id/trucks/:truck_id", async (req, res) => {
 
       res.json(truck);
     } catch (err) {
-      next(err);
+      
     }
 });
 

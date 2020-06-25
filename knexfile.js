@@ -1,5 +1,5 @@
 // Update with your config settings.
-const pgConnection = process.env.DATABASE_URL || 'postgres://nysikcxrgrqysp:7695a129f813be3500a9b04a90c6c24ea29e0f7aa8cf59af492ca885f99f92f7@ec2-52-202-146-43.compute-1.amazonaws.com:5432/d4pssce313r18g'
+const pgConnection = process.env.DATABASE_URL || 'postgres://elatdqmrcqrdrj:a0f67e4ddeac4ab208cb1e299360edb67ec42935a587d556af9b78a383bf600d@ec2-3-216-129-140.compute-1.amazonaws.com:5432/d4tquc7cpfk2tf'
 
 module.exports = {
 
@@ -26,8 +26,9 @@ module.exports = {
     client: "pg",
     connection: pgConnection,
     pool: {
-      min: 2,
-      max: 10
+      afterCreate: (conn, done) => {
+        conn.run("PRAGMA foreign_keys = ON", done);
+      }
     },
     migrations: {
       directory: './database/migrations'

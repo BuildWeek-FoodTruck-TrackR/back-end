@@ -1,38 +1,29 @@
 const db = require('../database/dbConfig');
 
-const add = (operator) => {
-    return db('menus')
-    .insert(menus)
-    .then(([id]) => db('menus').where({ id }).first());
+function addMenuItem(item) {
+    return db('menu_items')
+        .insert(item, 'id')
+        .then(ids => {
+            const [id] = ids;
+            return findMenuItemById(id);
+        })
 }
 
 const findAll = () => {
-    return db('menus')
+    return db('menu_items')
     .select('*')
 }
 
 const findMenuItemById = (filter) => {
-    return db('menus')
-    .select('id', 'item_name', 'item_description', 'item_price', 'item_image_URL')
+    return db('menu_items')
+    .select('id', 'name', 'description', 'price', 'image_URL')
     .where(filter)
 }
 
 const findBy = (id) => {
-    return db('menus')
-    .select('id')
+    return db('menu_items')
     .where({ id })
-    .then(items => {
-        return db
-        .select('*')
-        .from('menu_items')
-        .where({ menu_id: id })
-        .then(menu => {
-            return {
-                items: items,
-                menu: menu.map(menu => ({...menu}))
-            }
-        });
-    })
+    .first()
     
 }
 
@@ -62,7 +53,7 @@ const removeMenuItem = (id) => {
 }
 
 module.exports = {
-    add,
+    addMenuItem,
     findAll,
     findBy,
     findMenuItemById,
