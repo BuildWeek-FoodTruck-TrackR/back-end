@@ -265,7 +265,6 @@ _example:_
 
 | name                    | type    | required  | description    |
 | ----------------------- | ------- | --------  | -------------- |
-| `operator_id`           | Integer | Yes       |                |
 | `name`                  | String  | Yes       |                |
 | `image_URL`             | String  | No        |                |
 | `cuisine_type`          | String  | Yes       |                |
