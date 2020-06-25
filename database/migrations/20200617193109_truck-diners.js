@@ -14,8 +14,8 @@ exports.up = async function(knex) {
     table.increments("id");
     table.string("username").notNullable().unique();
     table.string("password").notNullable();
-    table.string("lon");
-    table.string('lat');
+    table.string("location");
+
 
   });
 
@@ -28,9 +28,10 @@ exports.up = async function(knex) {
       .inTable("operators")
       .onDelete("SET NULL");
     table.string("name").notNullable();
-    table.string("image URL");
+    table.string("image_URL");
     table.string("cuisine_type").notNullable();
     table.integer("customer_ratings_avg");
+    table.string('current_location');
     table.string("open_time").notNullable();
     
     
