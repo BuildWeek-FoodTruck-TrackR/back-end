@@ -12,22 +12,13 @@ const findAll = () => {
 }
 
 
-const findById = (id) => {
-    return db('trucks')
-    .select('*')
-    .where({ id })
-    .then(truck => {
-        return db
-        .select('*')
-        .from('current_location')
-        .where({ truck_id: id })
-        .then(location => {
-            return {
-                truck: truck,
-                location: location.map(location => ({...location}))
-            }
-        })
-    })  
+
+
+const findByLocation = (truckId) => {
+    return db('current_location as cl')
+    .select('cl.id', 'cl.lon', 'cl.lat', 'cl.departure_time')
+    .innerJoin('trucks as t', 't.id', 'cl.truck_id')
+    .where({ 't.id': truckId})
 }
 
 const findByOperator = (id) => {
@@ -39,45 +30,44 @@ const findByOperator = (id) => {
 
 
 const findBy = (id) => {
-    return db('trucks')
-    .select('*')
+    return db('trucks as t')
+    .select('t.id', 't.name as name', 't.cuisine_type', 't.image URL', 't.customer_ratings_avg', 't.open_time')
     .where({ id })
+    
     
 }
 
 const addTruckReview = (review) => {
-    return db ('truck_reviews')
-    .insert(review, 'id')
-    .then(ids => {
-        const [id] = ids;
-        return findReviewById(id)
-    })
+    return db('truck_reviews')
+        .insert(review, 'id')
+        .then(ids => {
+            const [id] = ids;
+            return findReviewById(id);
+        })
 }
 
-const findReviewById = (id) => {
-    return db 
-    .select('*')
-    .from('truck_reviews')
-    .where({ id })
-    .limit(10)
+const findReviewById = (truckId) => {
+    return db('truck_reviews as tr')
+    .select('tr.id', 'tr.rate', 'tr.review')
+    .innerJoin('trucks as t', 't.id', 'tr.truck_id')
+    .where({ 't.id': truckId })
+    
     
 }
 
-const getReviewsByTruck = (id) => {
-    return db('trucks')
-    .select('*')
-    .from('trucks')
-    .where({ id })
-    .then(() => {
-        return db('truck_reviews')
-        .select('*')
-        .where({ truck_id: id })
-        .then(review => {
-            return {
-                review: review.map(review => ({ ...review }))
-            }
-        })
-    })
+const findRating = (truckId) => {
+    return db('customer_rating as cr')
+    .select('cr.id', 'cr.rate')
+    .innerJoin('trucks as t', 't.id', 'cr.truck_id')
+    .where({ 't.id': truckId })
+}
+
+const getReviewsByTruck = (truckId) => {
+    return db('truck_reviews as tr')
+    .select('d.username', 'tr.rate', 'tr.review')
+    .innerJoin('diners as d', 'd.id', 'tr.diner_id')
+    .where('tr.truck_id', truckId)
+    
     
 }
 
@@ -85,9 +75,9 @@ const getReviewsByTruck = (id) => {
 const update = (changes, id) => {
     return db('trucks')
     .where({ id })
-    .update(changes)
+    .update(changes, 'id')
     .then(() => {
-        return findById(id);
+        return findBy(id);
     })
     
 }
@@ -103,12 +93,13 @@ const remove = (id) => {
 module.exports = {
     add,
     findAll,
-    findById,
     findBy,
     update,
     remove,
     findByOperator,
     getReviewsByTruck,
+    findRating,
+    findByLocation,
     findReviewById,
     addTruckReview
     

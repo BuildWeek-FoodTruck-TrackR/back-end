@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 })
 
 
-// #### POST NEW TRUCK -> /trucks
+// // #### POST NEW TRUCK -> /trucks
 router.post('/', (req, res) => {
     const truck = req.body
  
@@ -36,19 +36,33 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
     const { id } = req.params;
 
-    Trucks.findById(id)
+    Trucks.findBy(id)
     .then(trucks => {
-        if (trucks) {
-            res.status(200).json(trucks)
-        } else {
-            res.status(404).json({ message: 'Could not find truck with the given id.' })
-        }
+        Trucks.findRating(id)
+        .then(ratings => {
+            Menu.findMenuByTruck(id)
+            .then(menu => {
+                Trucks.findByLocation(id)
+                .then(location => {
+                
+                    location ?
+                    res.status(200).json({ ...trucks, ratings, menu, location }) : res
+                })
+                })
+               
+        })
+
+       
     })
     .catch(err => {
         res.status(500).json({ message: 'Failed to get the Truck.' })
     })
 
 })
+
+
+
+
 
 // ### GET MENU per TRUCKS ####
 router.get('/:id/menu', (req, res) => {
@@ -69,13 +83,13 @@ router.get('/:id/menu', (req, res) => {
 
 // #### POST REVIEW FOR TRUCK (DINER)
 router.post('/:id/reviews', (req, res) => {
-    const { id } = req.params;
-    let newReview = req.body;
-    newReview.truck_id = id
-
-    Trucks.addTruckReview(newReview)
-    .then(review =>{
-        res.status(201).json(review);
+    const { id } = req.params.id;
+    let addReview = req.body;
+    addReview.truck_id = id;
+    
+    Trucks.addTruckReview(id)
+    .then(addReview =>{
+        res.status(201).json(addReview);
     })
     .catch(err => {
         console.log(err);
@@ -107,7 +121,7 @@ router.put('/:id', (req, res) => {
     const { id } = req.params;
     const changes = req.body;
 
-    Trucks.findById(id)
+    Trucks.findBy(id)
     .then(truck => {
         if (truck) {
             Trucks.update(changes, id)
