@@ -10,7 +10,7 @@ const db = require('../../../database/dbConfig.js')
 // GET REQUEST -> /operators
 router.get('/', (req, res) => {
 
-    Operators.findBy()
+    Operators.findAll()
     .then(operators => {
         res.status(200).json(operators);
     })
@@ -44,7 +44,7 @@ router.get('/:id', (req, res) => {
 router.get('/:id/trucks', (req, res) => {
     const { id } = req.params;
 
-    Operators.findTruckByOperator(id)
+    Operators.findById(id)
     .then(operator => {
         if (operator) {
             res.status(200).json(operator)
@@ -98,19 +98,6 @@ router.delete('/:id', (req, res) => {
     })
 })
 
-// #### GET ALL TRUCKS REQUEST 
-router.get('/', (req, res) => {
-
-    Trucks.findAll()
-    .then(truck => {
-        res.status(200).json(truck);
-    })
-    .catch (err => {
-        res.status(500).json({ message: 'Failed To Get Trucks'})
-    })
-        
-
-})
 
 // #### CREATE NEW TRUCK  ####
 router.post('/:id/trucks', (req, res) => {
@@ -179,6 +166,7 @@ router.delete("/:id/trucks/:truck_id", async (req, res) => {
 });
 
 // ### POST MENU to TRUCK #### -> operators/trucks/menu
+// add truck_id in the body 
 router.post("/trucks/menu", async (req, res, next) => {
     try {
       const [id] = await db("menu_items").insert(req.body);
