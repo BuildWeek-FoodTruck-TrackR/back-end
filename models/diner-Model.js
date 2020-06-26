@@ -7,7 +7,7 @@ const findBy = () => {
 
 const add = diner => {
     return db('diners')
-    .insert(diner)
+    .insert(diner, 'id')
     .then(([id]) => db('diners').where({ id }).first());
 }
 

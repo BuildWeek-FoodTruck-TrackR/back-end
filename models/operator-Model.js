@@ -15,7 +15,7 @@ const findBy = (filter) => {
 
 const add = (operator) => {
     return db('operators')
-    .insert(operator)
+    .insert(operator, 'id')
     .then((ids) => {
         return findById(ids[0])
     }) 
