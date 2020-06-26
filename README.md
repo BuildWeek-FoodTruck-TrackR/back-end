@@ -265,7 +265,6 @@ _example:_
 
 | name                    | type    | required  | description    |
 | ----------------------- | ------- | --------  | -------------- |
-| `operator_id`           | Integer | Yes       |                |
 | `name`                  | String  | Yes       |                |
 | `image_URL`             | String  | No        |                |
 | `cuisine_type`          | String  | Yes       |                |
@@ -378,77 +377,5 @@ _example:_
     "customer_ratings_avg": null,
     "current_location": "4201 International Blvd, Oakland, CA 94601",
     "open_time": "9:00AM"
-}
-```
-
-### Operator creates menu for their owned Truck
-
-**[POST]** `/operators/trucks/menu`
-
-
-##### Body
-
-| name                    | type    | required  | description    |
-| ----------------------- | ------- | --------  | -------------- |
-| `truck_id`              | Integer | Yes       |                |
-| `name`                  | String  | Yes       |                |
-| `description`           | String  | No        |                |
-| `price`                 | String  | Yes       |                |
-| `image_URL`             | String  | No        |                |
-| `customer_rating_avg`   | String  | No        |                |
-
-
-### Get Individual Menu-Item from truck
-
-**[GET]** `/operators/trucks/:id/menu/:item_id`
-
-##### URL Parameters
-
-| name      | type    | required | description              |
-| --------- | ------- | -------- | ------------------------ |
-| `id`      | Integer | Yes      | ID of truck              |
-| `item_id` | Integer | Yes      | ID of menu item in truck |
-
-### Operator can DELETE Menu-Item
-
-**[DELETE]** `/operators/trucks/:id/menu/:item_id`
-
-##### URL Parameters
-
-| name      | type    | required | description              |
-| --------- | ------- | -------- | ------------------------ |
-| `id`      | Integer | Yes      | ID of truck              |
-| `item_id` | Integer | Yes      | ID of menu item in truck |
-
-#### RESPONSE
-
-##### 200 (OK)
-
-## DINERS 
-
-### GET DINERS by Id
-
-**[GET]** `/diners/:id`
-
-
-##### URL Parameters
-
-| name | type    | required | description            |
-| ---- | ------- | -------- | ---------------------- |
-| `id` | Integer | Yes      | ID of logged in diner   |
-
-
-#### RESPONSE
-
-##### 200 (OK)
-
-
-_example:_
-
-```
-{
-
-  "username": "ChangeTest",
-  "password": "passwerd"
 }
 ```
