@@ -423,3 +423,32 @@ _example:_
 #### RESPONSE
 
 ##### 200 (OK)
+
+## DINERS 
+
+### GET DINERS by Id
+
+**[GET]** `/diners/:id`
+
+
+##### URL Parameters
+
+| name | type    | required | description            |
+| ---- | ------- | -------- | ---------------------- |
+| `id` | Integer | Yes      | ID of logged in diner   |
+
+
+#### RESPONSE
+
+##### 200 (OK)
+
+
+_example:_
+
+```
+{
+
+  "username": "ChangeTest",
+  "password": "passwerd"
+}
+```
