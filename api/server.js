@@ -25,7 +25,7 @@ server.use(express.json());
 // ROUTES for Admin
 server.use('/operators', Restricted, operatorRoute);
 server.use('/diners', Restricted, dinerRouter);
-server.use('/trucks', Restricted, truckRouter)
+server.use('/trucks', truckRouter)
 
 // Authenticated Login for Operators and Client(Diners)
 server.use('/auth/operator', operatorAuth);
