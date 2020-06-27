@@ -2,7 +2,7 @@ const db = require('../database/dbConfig');
 
 const add = (trucks) => {
     return db('trucks')
-    .insert(trucks)
+    .insert(trucks, 'id')
     .then(([id]) => db('trucks').where({ id }).first());
 }
 
